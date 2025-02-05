@@ -23,8 +23,35 @@ app.use(
 );
 
 app.post('/chatToDocument', async (c) =>{
-	
-})
+	const openai = new OpenAI({
+		apiKey: c.env.OPEN_AI_KEY,
+	});
+
+	const { documentData, question } = await c.req.json();
+
+	const chatCompletion = await openai.chat.completions.create({
+		messages: [
+			{
+				role: 'system',
+				content:
+				  'You are assistant helping the user to chat to a document, Iam providing a JSON file of the markdown for the document, Using this answer the users question in clearest way possible , the document is about' +
+				  documentData,
+			},
+			{
+				role: 'user',
+				content: 'My Question is: ' + question,
+			},
+		],
+		model: 'gpt-4o',
+		temperature: 0.5,
+	});
+
+	const response =chatCompletion.choices[0].message.content;
+
+	return c.json({ message: response });
+
+});
+
 app.post('/translateDocument', async (c) => {
 	const { documentData, targetLang } = await c.req.json();
     // Generate a summary of document
