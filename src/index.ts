@@ -22,6 +22,9 @@ app.use(
 	})
 );
 
+app.post('/chatToDocument', async (c) =>{
+	
+})
 app.post('/translateDocument', async (c) => {
 	const { documentData, targetLang } = await c.req.json();
     // Generate a summary of document
