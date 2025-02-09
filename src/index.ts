@@ -22,7 +22,7 @@ app.use(
 	})
 );
 
-app.post('/chatToDocument', async (c) =>{
+app.post('/chatToDocument', async (c) => {
 	const openai = new OpenAI({
 		apiKey: c.env.OPEN_AI_KEY,
 	});
@@ -34,8 +34,8 @@ app.post('/chatToDocument', async (c) =>{
 			{
 				role: 'system',
 				content:
-				  'You are assistant helping the user to chat to a document, Iam providing a JSON file of the markdown for the document, Using this answer the users question in clearest way possible , the document is about' +
-				  documentData,
+				  'You are a assistant helping the user to chat to a document, Iam providing a JSON file of the markdown for the document.Using this answer the users question in clearest way possible , the document is about'
+				  + documentData,
 			},
 			{
 				role: 'user',
@@ -46,7 +46,7 @@ app.post('/chatToDocument', async (c) =>{
 		temperature: 0.5,
 	});
 
-	const response =chatCompletion.choices[0].message.content;
+	const response = chatCompletion.choices[0].message.content;
 
 	return c.json({ message: response });
 
